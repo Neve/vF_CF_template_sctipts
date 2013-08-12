@@ -3,13 +3,14 @@ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/ga
 
 # Installing PostgreSQL client ang gem
 
-apt-get install postgresql-client postgresql-devel libpq-dev make -y
+apt-get install postgresql-client libpq-dev make -y
 
-apt-get install ruby -y
+echo "  Installing Ruby"
+apt-get install ruby1.9.1 ruby1.9.1-dev -y
+echo "  Installing PostgreSQL gem"
+gem install pg --no-ri --no-rdoc
 
-gem install pg
-
-# Installing PostgreSQL server
+echo "  Installing PostgreSQL server"
 
 apt-get install postgresql -y
 
