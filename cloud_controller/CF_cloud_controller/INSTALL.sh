@@ -1,6 +1,36 @@
 #!/bin/bash
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
 
+apt-get  libxml2 libxml2-dev libxslt1-dev sqlite3 libsqlite3-dev unzip zip -y
+
+log_dir='/var/log/cloudfoundry/'
+log_file="$log_dir/cloud_controller.log"
+rails_log_file="$log_dir/cloud_controller-rails.log"
+pid_file="/var/run/cloudfoundry/cloud_controller.pid"
+external_uri="api.vcap.me"
+data_dir='/var/vcap/data/cloud_controller'
+config_dir='/etc/cloudfoundry/cloud_controller'
+
+
+mkdir $data_dir
+mkdir $config_dir
+
+cf_dirs=( droplets resources staging_manifests tmp )
+
+
+for i in $cf_dirs ; do
+  if ![ -d "$data_dir/$i" ]; then
+    mkdir "$data_dir/$i"
+  fi
+done
+
+vcap_install_path="/srv/cloud_controller/cloud_controller"
+config_file  = "$config_dir/cloud_controller.yml"
+
+git clone git@github.com:cloudfoundry/cloud_controller.git /srv/vcap-source/cloud_controller
+cd /srv/vcap-source/cloud_controller
+
+##############################################################
 apt-get install make g++ -y
 gem install nats -v 0.4.28 --no-ri --no-rdoc
 
@@ -64,7 +94,7 @@ exec start-stop-daemon --start --chuid cloudfoundry --pid /var/run/cloudfoundry/
 
 EOF
 
-ln -s /lib/init/upstart-job /etc/init.d/nats-server
+ln -s /lib/init/upstart-job /etc/init/nats-server
 #/etc/init.d/nats-server
 #chmod +x /etc/init.d/nats-server
 

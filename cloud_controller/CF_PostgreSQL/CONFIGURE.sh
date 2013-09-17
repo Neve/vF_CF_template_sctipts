@@ -12,5 +12,6 @@ sudo -u postgres psql -c "CREATE ROLE $DB_USER WITH SUPERUSER LOGIN PASSWORD '$D
 echo "   Create database"
 sudo -u postgres createdb $DB_NAME
 echo "   Grant privileges"
+
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
 
